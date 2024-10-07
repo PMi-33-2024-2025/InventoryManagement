@@ -26,5 +26,5 @@ CREATE TABLE [InventoryManagement].[dbo].[Products] (
     [Description] TEXT NULL,
     [CategoryId] INT FOREIGN KEY REFERENCES [Categories]([Id]),
     [SupplierId] INT FOREIGN KEY REFERENCES [Suppliers]([Id]),
-    [LastUpdated] TIMESTAMP NOT NULL
+    [LastUpdated] DATETIME NOT NULL
 );
