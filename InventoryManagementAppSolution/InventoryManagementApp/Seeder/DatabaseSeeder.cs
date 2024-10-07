@@ -53,7 +53,7 @@ namespace InventoryManagementApp.Seeder
                 for (int i = 0; i < products.Count; i++)
                 {
                     var product = products[i];
-                    string query = "INSERT INTO dbo.Products (Title, Amount, Price, Description, CategoryId, SupplierId) VALUES (@Title, @Amount, @Price, @Description, @CategoryId, @SupplierId)";
+                    string query = "INSERT INTO dbo.Products (Title, Amount, Price, Description, CategoryId, SupplierId, LastUpdated) VALUES (@Title, @Amount, @Price, @Description, @CategoryId, @SupplierId, @LastUpdated)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Title", product.Title);
