@@ -9,7 +9,6 @@ namespace InventoryManagementApp
             DatabaseSeeder.FillDatabaseWithTestData();
             Console.WriteLine("Data was inserted successfully!");
 
-            DatabaseSeeder.DisplayData("Users", "SELECT Id, Name, Role FROM dbo.Users");
             DatabaseSeeder.DisplayData("Categories", "SELECT Id, Name FROM dbo.Categories");
             DatabaseSeeder.DisplayData("Suppliers", "SELECT Id, Name FROM dbo.Suppliers");
             DatabaseSeeder.DisplayData("Products", "SELECT Id, Title, Amount, Price, Description FROM dbo.Products");

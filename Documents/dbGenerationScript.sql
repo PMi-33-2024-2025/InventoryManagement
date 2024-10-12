@@ -1,13 +1,6 @@
 CREATE DATABASE [InventoryManagement];
 GO
 
-CREATE TABLE [InventoryManagement].[dbo].[Users] (
-    [Id] INT IDENTITY (1, 1) PRIMARY KEY,
-    [Name] VARCHAR(255) NOT NULL,
-    [Password] VARCHAR(255) NOT NULL,
-    [Role] VARCHAR(10) NOT NULL CHECK([Role] IN ('user', 'admin'))
-);
-
 CREATE TABLE [InventoryManagement].[dbo].[Categories] (
     [Id] INT IDENTITY (1, 1) PRIMARY KEY,
     [Name] VARCHAR(255) NOT NULL,

@@ -8,7 +8,6 @@ namespace InventoryManagementApp.Seeder
                 "Integrated Security=True;";
         public static void FillDatabaseWithTestData()
         {
-            var users = GenerateUsers(30);
             var categories = GenerateCategories(10);
             var suppliers = GenerateSuppliers(10);
             var products = GenerateProducts();
@@ -16,18 +15,6 @@ namespace InventoryManagementApp.Seeder
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                foreach (var user in users)
-                {
-                    string query = "INSERT INTO dbo.Users (Name, Password, Role) VALUES (@Name, @Password, @Role)";
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Name", user.Name);
-                        command.Parameters.AddWithValue("@Password", user.Password);
-                        command.Parameters.AddWithValue("@Role", user.Role);
-                        command.ExecuteNonQuery();
-                    }
-                }
 
                 foreach (var category in categories)
                 {
@@ -68,31 +55,6 @@ namespace InventoryManagementApp.Seeder
                 }
 
             }
-        }
-
-        private static List<User> GenerateUsers(int count)
-        {
-            var users = new List<User>();
-            for (int i = 1; i <= 5; i++)
-            {
-                users.Add(new User
-                {
-                    Name = $"Admin{i}",
-                    Password = "password",
-                    Role = "admin"
-                });
-            }
-
-            for (int i = 1; i <= count - 5; i++)
-            {
-                users.Add(new User
-                {
-                    Name = $"User{i}",
-                    Password = "password",
-                    Role = "user"
-                });
-            }
-            return users;
         }
 
         private static List<string> GenerateCategories(int count)
@@ -183,13 +145,6 @@ namespace InventoryManagementApp.Seeder
                     reader.Close();
                 }
             }
-        }
-
-        public class User
-        {
-            public string Name { get; set; }
-            public string Password { get; set; }
-            public string Role { get; set; }
         }
 
         public class Product
