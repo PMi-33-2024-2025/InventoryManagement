@@ -1,13 +1,5 @@
-﻿using System.Text;
+﻿using InventoryManagement.DAL;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace InventoryManagement.UI
 {
@@ -16,6 +8,8 @@ namespace InventoryManagement.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        InventoryDbContext _context = new InventoryDbContext();
+        
         public MainWindow()
         {
             InitializeComponent();
