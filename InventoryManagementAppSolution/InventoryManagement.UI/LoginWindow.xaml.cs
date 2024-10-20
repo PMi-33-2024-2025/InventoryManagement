@@ -1,4 +1,4 @@
-﻿using InventoryManagement.DAL;
+﻿using InventoryManagement.BLL;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,30 +16,30 @@ using System.Windows.Shapes;
 
 namespace InventoryManagement.UI
 {
-    /// <summary>
-    /// Interaction logic for LoginWindow.xaml
-    /// </summary>
-    public partial class LoginWindow : Window
-    {
-        private readonly AuthService _authService;
+	/// <summary>
+	/// Interaction logic for LoginWindow.xaml
+	/// </summary>
+	public partial class LoginWindow : Window
+	{
+		private readonly AuthService _authService;
 
-        public LoginWindow()
-        {
-            InitializeComponent();
-            _authService = App.ServiceProvider.GetRequiredService<AuthService>();
-        }
+		public LoginWindow()
+		{
+			InitializeComponent();
+			_authService = App.ServiceProvider.GetRequiredService<AuthService>();
+		}
 
-        private async void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            var result = await _authService.LoginUserAsync(UsernameTextBox.Text, PasswordBox.Password);
-            if (result.Succeeded)
-            {
-                MessageBox.Show("Login successful!");
-            }
-            else
-            {
-                MessageBox.Show("Login failed. Please check your credentials.");
-            }
-        }
-    }
+		private async void LoginButton_Click(object sender, RoutedEventArgs e)
+		{
+			var result = await _authService.LoginUserAsync(UsernameTextBox.Text, PasswordBox.Password);
+			if (result.Succeeded)
+			{
+				MessageBox.Show("Login successful!");
+			}
+			else
+			{
+				MessageBox.Show("Login failed. Please check your credentials.");
+			}
+		}
+	}
 }

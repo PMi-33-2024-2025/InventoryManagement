@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace InventoryManagement.BLL.Models
+namespace InventoryManagement.DAL.Entities
 {
     public class Category
     {

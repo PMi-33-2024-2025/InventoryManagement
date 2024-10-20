@@ -1,4 +1,4 @@
-﻿using InventoryManagement.BLL.Models;
+﻿using InventoryManagement.DAL.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

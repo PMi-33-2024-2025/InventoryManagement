@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace InventoryManagement.BLL.Models
+namespace InventoryManagement.DAL.Entities
 {
     public class Product
     {

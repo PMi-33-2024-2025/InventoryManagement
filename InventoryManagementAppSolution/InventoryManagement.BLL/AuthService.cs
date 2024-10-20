@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using InventoryManagement.DAL;
+using Microsoft.AspNetCore.Identity;
 
-namespace InventoryManagement.DAL
+namespace InventoryManagement.BLL
 {
     public class AuthService
     {
