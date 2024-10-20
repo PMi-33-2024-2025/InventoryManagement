@@ -3,16 +3,15 @@ using System.Windows;
 
 namespace InventoryManagement.UI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        InventoryDbContext _context = new InventoryDbContext();
-        
-        public MainWindow()
+        private readonly InventoryDbContext _context;
+
+        // Constructor accepts InventoryDbContext
+        public MainWindow(InventoryDbContext context)
         {
             InitializeComponent();
+            _context = context; // Assign context to the private field
         }
     }
 }
