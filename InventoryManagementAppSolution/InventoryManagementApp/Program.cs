@@ -27,11 +27,13 @@ namespace InventoryManagementApp
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<InventoryDbContext>(options =>
-                options.UseSqlServer("YourConnectionString"));
+                options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=InventoryManagement;Trusted_Connection=True;"));
 
             services.AddIdentity<InventoryUser, IdentityRole>()
                 .AddEntityFrameworkStores<InventoryDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddLogging();
         }
 
         private static async Task SeedData(IServiceProvider serviceProvider)

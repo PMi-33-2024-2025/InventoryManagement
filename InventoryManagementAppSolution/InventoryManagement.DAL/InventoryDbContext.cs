@@ -6,6 +6,10 @@ namespace InventoryManagement.DAL
 {
     public class InventoryDbContext : IdentityDbContext<InventoryUser>
     {
+        public InventoryDbContext()
+        {
+        }
+
         public InventoryDbContext(DbContextOptions<InventoryDbContext> options)
             : base(options)
         {
@@ -14,6 +18,13 @@ namespace InventoryManagement.DAL
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Supplier> Suppliers { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=InventoryManagement;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,5 +43,4 @@ namespace InventoryManagement.DAL
                 .HasForeignKey(p => p.SupplierId);
         }
     }
-
 }

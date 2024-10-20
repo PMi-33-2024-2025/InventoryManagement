@@ -7,11 +7,14 @@ namespace InventoryManagement.UI
     {
         private readonly InventoryDbContext _context;
 
-        // Constructor accepts InventoryDbContext
-        public MainWindow(InventoryDbContext context)
+        public MainWindow()
         {
             InitializeComponent();
-            _context = context; // Assign context to the private field
+        }
+
+        public MainWindow(InventoryDbContext context) : this()
+        {
+            _context = context;
         }
     }
 }

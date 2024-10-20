@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using InventoryManagement.DAL;
 using Microsoft.AspNetCore.Identity;
 using System.Windows;
+using System;
 
 namespace InventoryManagement.UI
 {
@@ -15,15 +16,10 @@ namespace InventoryManagement.UI
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-            ServiceProvider = serviceCollection.BuildServiceProvider();
-
             base.OnStartup(e);
-        }
 
-        private void ConfigureServices(IServiceCollection services)
-        {
+            var services = new ServiceCollection();
+
             services.AddDbContext<InventoryDbContext>(options =>
                 options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=InventoryManagement;Integrated Security=True;"));
 
@@ -31,7 +27,12 @@ namespace InventoryManagement.UI
                 .AddEntityFrameworkStores<InventoryDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddTransient<AuthService>();
+            services.AddScoped<AuthService>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var mainWindow = new MainWindow(serviceProvider.GetRequiredService<InventoryDbContext>());
+            mainWindow.Show();
         }
     }
 }

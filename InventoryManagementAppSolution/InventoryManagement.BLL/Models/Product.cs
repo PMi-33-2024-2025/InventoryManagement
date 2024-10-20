@@ -14,6 +14,7 @@ namespace InventoryManagement.BLL.Models
         public int Amount { get; set; }
         [Required]
         [Range(1, double.MaxValue)]
+        [Column(TypeName = "decimal(19, 4)")]
         public decimal Price { get; set; }
         public string Description { get; set; } = string.Empty;
         public int CategoryId { get; set; }
