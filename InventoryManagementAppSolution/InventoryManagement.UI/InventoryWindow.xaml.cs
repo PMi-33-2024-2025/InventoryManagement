@@ -114,7 +114,7 @@ namespace InventoryManagement.UI
 		{
 			if (SelectedMinPrice > SelectedMaxPrice)
 			{
-				MessageBox.Show("Min price cannot be greater than max price.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Мінімальна ціна не повинна перевищувати максимальну.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -142,11 +142,12 @@ namespace InventoryManagement.UI
 		private async Task LoadFilteredCollectionsAsync()
 		{
 			int index = comboBoxCategory.SelectedIndex;
-			string category = index == 0 ? string.Empty : Categories?[index] ?? string.Empty;
+			string category = (comboBoxCategory.SelectedItem as string)!;
+
 
 			Products = await _inventoryService.GetFilteredProductsAsync(
 				Filters.NameContains(textBoxNameContains.Text.Trim()),
-				Filters.HasCategory(category),
+				Filters.HasCategory(category == "Усі" ? string.Empty : category),
 				Filters.HasMinPrice(SelectedMinPrice),
 				Filters.HasMaxPrice(SelectedMaxPrice),
 				IsInStock ? Filters.IsInStock() : _ => true

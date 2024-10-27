@@ -4,7 +4,6 @@ using InventoryManagement.DAL;
 using InventoryManagement.BLL;
 using Microsoft.AspNetCore.Identity;
 using System.Windows;
-using System;
 
 namespace InventoryManagement.UI
 {

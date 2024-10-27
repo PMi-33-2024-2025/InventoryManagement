@@ -24,5 +24,10 @@ namespace InventoryManagement.BLL
         {
             return await _signInManager.PasswordSignInAsync(username, password, false, false);
         }
+
+        public async Task LogoutUserAsync()
+		{
+			await _signInManager.SignOutAsync();
+		}
     }
 }
