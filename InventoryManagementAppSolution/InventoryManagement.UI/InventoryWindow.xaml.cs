@@ -164,8 +164,13 @@ namespace InventoryManagement.UI
 
 		private void AddItemButton_Click(object sender, RoutedEventArgs e)
 		{
-			AddItemWindow addItemWindow = new() { Owner = this };
+			AddItemWindow addItemWindow = new(ReloadPage) { Owner = this };
 			addItemWindow.ShowDialog();
 		}
+
+		private async void ReloadPage()
+		{
+            await LoadCollectionsAsync();
+        }
     }
 }

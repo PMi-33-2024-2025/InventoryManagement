@@ -55,5 +55,33 @@ namespace InventoryManagement.BLL
 			_db.Products.Remove(productToDelete);
 			await _db.SaveChangesAsync();
 		}
+
+        public async Task<Category> CreateCategoryIfNonExist(string categoryName)
+        {
+            if (await _db.Categories.AnyAsync(c => c.Name == categoryName))
+            {
+                return await _db.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
+            }
+
+            var newCategory = new Category { Name = categoryName };
+            await _db.Categories.AddAsync(newCategory);
+            await _db.SaveChangesAsync();
+
+            return await _db.Categories.FirstOrDefaultAsync(c => c.Name == categoryName) ?? newCategory;
+        }
+
+        public async Task<Supplier> CreateSupplierIfNonExist(string supplierName)
+        {
+            var existingSupplier = await _db.Suppliers.FirstOrDefaultAsync(s => s.Name == supplierName);
+            if (existingSupplier != null)
+            {
+                return existingSupplier;
+            }
+
+            var newSupplier = new Supplier { Name = supplierName };
+            await _db.Suppliers.AddAsync(newSupplier);
+            await _db.SaveChangesAsync();
+            return await _db.Suppliers.FirstOrDefaultAsync(s => s.Name == supplierName) ?? newSupplier;
+        }
 	}
 }
