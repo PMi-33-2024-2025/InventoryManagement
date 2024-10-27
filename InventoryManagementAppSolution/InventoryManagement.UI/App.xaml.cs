@@ -13,7 +13,7 @@ namespace InventoryManagement.UI
     /// </summary>
     public partial class App : Application
     {
-        public static IServiceProvider ServiceProvider { get; private set; }
+        public static ServiceProvider ServiceProvider { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -29,8 +29,9 @@ namespace InventoryManagement.UI
                 .AddDefaultTokenProviders();
 
             services.AddScoped<AuthService>();
+            services.AddScoped<InventoryService>();
 
-            var serviceProvider = services.BuildServiceProvider();
+			ServiceProvider = services.BuildServiceProvider();
         }
     }
 }

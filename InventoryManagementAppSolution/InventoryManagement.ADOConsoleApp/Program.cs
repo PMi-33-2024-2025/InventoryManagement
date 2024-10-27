@@ -49,11 +49,23 @@ namespace InventoryManagement.ADOConsoleApp
 					await roleManager.CreateAsync(new IdentityRole("Admin"));
 				}
 
+				if(!await roleManager.RoleExistsAsync("User"))
+				{
+					await roleManager.CreateAsync(new IdentityRole("User"));
+				}
+
 				var adminUser = new InventoryUser { UserName = "admin@example.com" };
 				if (await userManager.FindByNameAsync(adminUser.UserName) == null)
 				{
 					await userManager.CreateAsync(adminUser, "AdminPassword123!");
 					await userManager.AddToRoleAsync(adminUser, "Admin");
+				}
+
+				var user = new InventoryUser { UserName = "user@example.com" };
+				if (await userManager.FindByNameAsync(user.UserName) == null)
+				{
+					await userManager.CreateAsync(user, "UserPassword123!");
+					await userManager.AddToRoleAsync(user, "User");
 				}
 			}
 

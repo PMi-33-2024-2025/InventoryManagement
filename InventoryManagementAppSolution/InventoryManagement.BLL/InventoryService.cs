@@ -14,19 +14,28 @@ namespace InventoryManagement.BLL
 		}
 
 		public async Task<List<Product>> GetProductsAsync()
-			=> await _db.Products.AsNoTracking().ToListAsync();
+			=> await _db.Products
+			.Include(p => p.Supplier)
+			.Include(p => p.Category)
+			.AsNoTracking()
+			.ToListAsync();
 
-		public async Task<List<Product>> GetOrderedProductsAsync(IComparer<Product> comparer)
-			=> (await GetProductsAsync()).Order(comparer).ToList();
+		public async Task<List<Category>> GetCategoriesAsync()
+			=> await _db.Categories
+			.AsNoTracking()
+			.ToListAsync();
 
-		public async Task<List<Product>> GetFilteredProductsAsync(Func<Product, bool> predicate)
-			=> (await GetProductsAsync()).Where(predicate).ToList();
-
-		public async Task<List<Product>> GetOrderedAndFilteredProductsAsync(IComparer<Product> comparer, Func<Product, bool> predicate)
-			=> (await GetProductsAsync()).Order(comparer).Where(predicate).ToList();
+		public async Task<List<Product>> GetFilteredProductsAsync(params Func<Product, bool>[] predicates)
+			=> (await GetProductsAsync())
+			.Where(product => predicates.All(predicate => predicate(product)))
+			.ToList();
 
 		public async Task<Product?> GetProductAsync(int id)
-			=> await _db.Products.AsNoTracking().FirstAsync(p => p.Id == id);
+			=> await _db.Products
+			.Include(p => p.Supplier)
+			.Include(p => p.Category)
+			.AsNoTracking()
+			.FirstAsync(p => p.Id == id);
 
 		public async Task AddProductAsync(Product product)
 		{

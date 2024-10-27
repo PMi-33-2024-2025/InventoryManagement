@@ -1,0 +1,63 @@
+﻿<Window x:Class="InventoryManagement.UI.InventoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InventoryManagement.UI"
+        mc:Ignorable="d"
+        Title="Inventory Management" Height="600" Width="1000"
+        Loaded="Window_Loaded">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button Content="Log in" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" Width="75" />
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Margin="10" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock Text="Фільтр" FontSize="16" FontWeight="Bold" />
+            <TextBlock Text="Назва містить:" Margin="0,10,0,5" />
+            <TextBox Name="textBoxNameContains" Width="Auto" />
+
+            <TextBlock Text="Категорія" Margin="0,10,0,5" />
+            <ComboBox Name="comboBoxCategory" Width="Auto" ItemsSource="{Binding Categories}" SelectedIndex="0">
+                
+            </ComboBox>
+
+            <TextBlock Margin="0,10,0,5">
+                <Run Text="Мінімальна ціна: " />
+                <Run Text="{Binding SelectedMinPrice, StringFormat=\{0:F2\}}" />
+            </TextBlock>
+            <Slider Minimum="{Binding MinPrice}" Maximum="{Binding MaxPrice}" Value="{Binding SelectedMinPrice, Mode=TwoWay}" Width="Auto" Margin="0,5,0,5" />
+
+            <TextBlock>
+                <Run Text="Максимальна ціна: " />
+                <Run Text="{Binding SelectedMaxPrice, StringFormat=\{0:F2\}}" />
+            </TextBlock>
+            <Slider Minimum="{Binding MinPrice}" Maximum="{Binding MaxPrice}" Value="{Binding SelectedMaxPrice, Mode=TwoWay}" Width="Auto" Margin="0,5,0,5" />
+
+            <CheckBox Content="Наявні на складі" Margin="0,10,0,5" IsChecked="{Binding IsInStock, Mode=TwoWay}" />
+
+            <Button Content="Застосувати" Width="100" Margin="0,10,0,5" Click="ApplyButton_Click" />
+            <Button Content="Очистити" Width="100" Margin="0,5,0,0" Click="ClearButton_Click" />
+        </StackPanel>
+
+        <DataGrid Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="10" ItemsSource="{Binding Products}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Код" Binding="{Binding Id}" Width="5*"/>
+                <DataGridTextColumn Header="Назва" Binding="{Binding Title}" Width="15*"/>
+                <DataGridTextColumn Header="Категорія" Binding="{Binding Category.Name}" Width="15*"/>
+                <DataGridTextColumn Header="К-ть" Binding="{Binding Amount}" Width="5*"/>
+                <DataGridTextColumn Header="Ціна" Binding="{Binding Price, StringFormat=\{0:F2\}}" Width="5*"/>
+                <DataGridTextColumn Header="Опис" Binding="{Binding Description}" Width="30*"/>
+                <DataGridTextColumn Header="Постачальник" Binding="{Binding Supplier.Name}" Width="15*"/>
+                <DataGridTextColumn Header="Дата оновлення" Binding="{Binding LastUpdated, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Width="15*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
