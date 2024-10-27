@@ -144,10 +144,9 @@ namespace InventoryManagement.UI
 			int index = comboBoxCategory.SelectedIndex;
 			string category = (comboBoxCategory.SelectedItem as string)!;
 
-
 			Products = await _inventoryService.GetFilteredProductsAsync(
 				Filters.NameContains(textBoxNameContains.Text.Trim()),
-				Filters.HasCategory(category == "Усі" ? string.Empty : category),
+				Filters.HasCategory(category.Equals("Усі", StringComparison.Ordinal) ? string.Empty : category),
 				Filters.HasMinPrice(SelectedMinPrice),
 				Filters.HasMaxPrice(SelectedMaxPrice),
 				IsInStock ? Filters.IsInStock() : _ => true
@@ -164,13 +163,16 @@ namespace InventoryManagement.UI
 
 		private void AddItemButton_Click(object sender, RoutedEventArgs e)
 		{
-			AddItemWindow addItemWindow = new(ReloadPage) { Owner = this };
+			AddItemWindow addItemWindow = new(ReloadPage)
+			{ Owner = this };
 			addItemWindow.ShowDialog();
 		}
 
 		private async void ReloadPage()
 		{
-            await LoadCollectionsAsync();
-        }
-    }
+			await LoadCollectionsAsync();
+			SelectedMinPrice = MinPrice = Products?.Min(p => p.Price) ?? 0;
+			SelectedMaxPrice = MaxPrice = Products?.Max(p => p.Price) ?? 0;
+		}
+	}
 }

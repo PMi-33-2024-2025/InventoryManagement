@@ -56,32 +56,34 @@ namespace InventoryManagement.BLL
 			await _db.SaveChangesAsync();
 		}
 
-        public async Task<Category> CreateCategoryIfNonExist(string categoryName)
+        public async Task<Category> CreateCategoryIfNotExists(string categoryName)
         {
-            if (await _db.Categories.AnyAsync(c => c.Name == categoryName))
+            var existingCategory = _db.Categories.AsEnumerable().FirstOrDefault(c => c.Name.Equals(categoryName, StringComparison.Ordinal));
+			if (existingCategory is not null)
             {
-                return await _db.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
+                return existingCategory;
             }
 
             var newCategory = new Category { Name = categoryName };
             await _db.Categories.AddAsync(newCategory);
             await _db.SaveChangesAsync();
 
-            return await _db.Categories.FirstOrDefaultAsync(c => c.Name == categoryName) ?? newCategory;
+            return newCategory;
         }
 
-        public async Task<Supplier> CreateSupplierIfNonExist(string supplierName)
+        public async Task<Supplier> CreateSupplierIfNotExists(string supplierName)
         {
-            var existingSupplier = await _db.Suppliers.FirstOrDefaultAsync(s => s.Name == supplierName);
-            if (existingSupplier != null)
-            {
-                return existingSupplier;
-            }
+            var existingSupplier = _db.Suppliers.AsEnumerable().FirstOrDefault(s => s.Name.Equals(supplierName, StringComparison.Ordinal));
+            if (existingSupplier is not null)
+			{
+				return existingSupplier;
+			}
 
             var newSupplier = new Supplier { Name = supplierName };
             await _db.Suppliers.AddAsync(newSupplier);
             await _db.SaveChangesAsync();
-            return await _db.Suppliers.FirstOrDefaultAsync(s => s.Name == supplierName) ?? newSupplier;
+
+            return newSupplier;
         }
 	}
 }

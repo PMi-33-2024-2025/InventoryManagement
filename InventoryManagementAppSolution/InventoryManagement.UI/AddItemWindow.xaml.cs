@@ -68,8 +68,8 @@ namespace InventoryManagement.UI
                 return;
             }
 
-            var categoryNew = await _inventoryService.CreateCategoryIfNonExist(category);
-            var supplierNew = await _inventoryService.CreateSupplierIfNonExist(supplier);
+            var categoryNew = await _inventoryService.CreateCategoryIfNotExists(category);
+            var supplierNew = await _inventoryService.CreateSupplierIfNotExists(supplier);
 
             Product product = new Product
             {

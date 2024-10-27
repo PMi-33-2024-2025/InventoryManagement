@@ -6,11 +6,11 @@ namespace InventoryManagement.BLL
 	{
 		public static Func<Product, bool> NameContains(string name) =>
 			(Product p) => name.Equals(string.Empty)
-			|| p.Title.Contains(name, StringComparison.CurrentCultureIgnoreCase);
+			|| p.Title.Contains(name, StringComparison.OrdinalIgnoreCase);
 
 		public static Func<Product, bool> HasCategory(string category) =>
 			(Product p) => category.Equals(string.Empty)
-			|| p.Category.Name.Equals(category, StringComparison.CurrentCultureIgnoreCase);
+			|| p.Category.Name.Equals(category, StringComparison.OrdinalIgnoreCase);
 
 		public static Func<Product, bool> HasMinPrice(decimal minPrice) =>
 			(Product p) => p.Price >= minPrice;
