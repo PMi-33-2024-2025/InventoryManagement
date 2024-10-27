@@ -13,7 +13,7 @@ namespace InventoryManagement.UI
     /// </summary>
     public partial class App : Application
     {
-        public static ServiceProvider ServiceProvider { get; private set; }
+        public static IServiceProvider ServiceProvider { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -30,6 +30,7 @@ namespace InventoryManagement.UI
 
             services.AddScoped<AuthService>();
             services.AddScoped<InventoryService>();
+			services.AddLogging();
 
 			ServiceProvider = services.BuildServiceProvider();
         }

@@ -154,5 +154,11 @@ namespace InventoryManagement.UI
 
 			comboBoxCategory.SelectedIndex = index;
 		}
+
+		private void LoginButton_Click(object sender, RoutedEventArgs e)
+		{
+			LoginWindow loginWindow = new() { Owner = this };
+			loginWindow.ShowDialog();
+		}
 	}
 }
