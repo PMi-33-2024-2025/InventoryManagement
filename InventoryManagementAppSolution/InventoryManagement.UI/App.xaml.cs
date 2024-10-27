@@ -4,6 +4,8 @@ using InventoryManagement.DAL;
 using InventoryManagement.BLL;
 using Microsoft.AspNetCore.Identity;
 using System.Windows;
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
 
 namespace InventoryManagement.UI
 {
@@ -16,6 +18,9 @@ namespace InventoryManagement.UI
             base.OnStartup(e);
 
             var services = new ServiceCollection();
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(@"C:\keys"))
+                .SetApplicationName("InventoryManagement");
 
             services.AddDbContext<InventoryDbContext>(options =>
                 options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=InventoryManagement;Integrated Security=True;"));
