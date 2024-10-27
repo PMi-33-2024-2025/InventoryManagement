@@ -161,5 +161,11 @@ namespace InventoryManagement.UI
 			LoginWindow loginWindow = new() { Owner = this };
 			loginWindow.ShowDialog();
 		}
-	}
+
+		private void AddItemButton_Click(object sender, RoutedEventArgs e)
+		{
+			AddItemWindow addItemWindow = new() { Owner = this };
+			addItemWindow.ShowDialog();
+		}
+    }
 }

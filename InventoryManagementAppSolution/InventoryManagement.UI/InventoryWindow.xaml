@@ -17,7 +17,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Content="Log in" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" Width="75" Click="LoginButton_Click" />
+        <Button Content="Додати новий товар" Click="AddItemButton_Click"/>
+        <Button Content="Увійти" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,10" Width="75" Click="LoginButton_Click" />
 
         <StackPanel Grid.Column="0" Grid.Row="1" Margin="10" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
             <TextBlock Text="Фільтр" FontSize="16" FontWeight="Bold" />
