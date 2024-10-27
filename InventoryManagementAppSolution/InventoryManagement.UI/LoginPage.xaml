@@ -19,7 +19,7 @@
             <PasswordBox Name="passwordBox" Width="250" Height="25" PasswordChar="*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
 
             <Button Content="Ввійти" Width="150" Height="40" Margin="0,20,0,0" 
-            HorizontalAlignment="Center" />
+            HorizontalAlignment="Center" Click="LoginButton_Click"/>
 
             <TextBlock Name="registerLink"
                Text="Створити новий акаунт" 
