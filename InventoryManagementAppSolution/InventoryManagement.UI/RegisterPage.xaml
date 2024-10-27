@@ -22,7 +22,7 @@
             <PasswordBox Name="confirmPasswordBox" Width="250" Height="25" PasswordChar="*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
 
             <Button Content="Зареєструватися" Width="150" Height="40" Margin="0,20,0,0" 
-        HorizontalAlignment="Center" />
+        HorizontalAlignment="Center" Click="RegisterButton_Click" />
 
             <TextBlock Name="loginLink"
            Text="Уже маєте акаунт?" 

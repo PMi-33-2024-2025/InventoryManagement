@@ -114,7 +114,7 @@ namespace InventoryManagement.UI
 		{
 			if (SelectedMinPrice > SelectedMaxPrice)
 			{
-				MessageBox.Show("Мінімальна ціна не повинна перевищувати максимальну.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Мінімальна ціна не повинна перевищувати максимальну ціну.", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 

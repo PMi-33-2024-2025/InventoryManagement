@@ -14,8 +14,8 @@ namespace InventoryManagement.UI
 		{
 			InitializeComponent();
 			NavigateToRegister = navigateToRegister;
-			_authService = App.ServiceProvider.GetRequiredService<AuthService>();
 			CloseWindow = closeWindow;
+			_authService = App.ServiceProvider.GetRequiredService<AuthService>();
 		}
 
 		private void registerLink_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
