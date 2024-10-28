@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace InventoryManagement.UI
 {
@@ -171,6 +172,11 @@ namespace InventoryManagement.UI
             addItemWindow.ShowDialog();
         }
 
+        private void AdminPanelButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private async Task ReloadPage()
         {
             await LoadCollectionsAsync();
@@ -191,6 +197,9 @@ namespace InventoryManagement.UI
             loginButton.Visibility = Visibility.Visible;
             usernameText.Visibility = Visibility.Collapsed;
             logoutButton.Visibility = Visibility.Collapsed;
+            editColumn.Visibility = Visibility.Collapsed;
+            deleteColumn.Visibility = Visibility.Collapsed;
+            adminPanelButton.Visibility = Visibility.Collapsed;
         }
 
         private void ConfigureForUser()
@@ -200,17 +209,39 @@ namespace InventoryManagement.UI
             loginButton.Visibility = Visibility.Collapsed;
             usernameText.Visibility = Visibility.Visible;
             logoutButton.Visibility = Visibility.Visible;
+            editColumn.Visibility = Visibility.Visible;
+            deleteColumn.Visibility = Visibility.Visible;
+            adminPanelButton.Visibility = Visibility.Collapsed;
         }
 
         private void ConfigureForAdmin()
         {
             ConfigureForUser();
+            adminPanelButton.Visibility = Visibility.Visible;
         }
 
         private async void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             _authService.LogoutUser();
             await ReloadPage();
+        }
+
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.CommandParameter is Product product)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    $"Ви впевнені, що хочете видалити {product.Title}?",
+                    "Підтвердження видалення",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    await _inventoryService.DeleteProductAsync(product.Id);
+                    await ReloadPage();
+                }
+            }
         }
     }
 }
