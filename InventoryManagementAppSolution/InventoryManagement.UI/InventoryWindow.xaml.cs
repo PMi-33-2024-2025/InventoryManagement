@@ -176,7 +176,8 @@ namespace InventoryManagement.UI
 
         private void AdminPanelButton_Click(object sender, RoutedEventArgs e)
         {
-
+            AdminPanel adminPanel = new() { Owner = this };
+            adminPanel.ShowDialog();
         }
 
         private async Task ReloadPage()
