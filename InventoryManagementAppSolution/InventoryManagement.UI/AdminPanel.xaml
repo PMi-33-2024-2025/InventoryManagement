@@ -14,8 +14,8 @@
         <Grid Grid.ColumnSpan="2">
             <DataGrid x:Name="UsersDataGrid" AutoGenerateColumns="False" Margin="10,78,10,10">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" />
-                    <DataGridTextColumn Header="Roles" Binding="{Binding RoleDisplay}" />
+                    <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Roles" Binding="{Binding RoleDisplay}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
 
