@@ -20,6 +20,8 @@ namespace InventoryManagement.UI
         private decimal _selectedMinPrice;
         private decimal _selectedMaxPrice;
         private bool _isInStock;
+        private Product _currentEditingProduct;
+        public bool IsEditing { get; set; } = false;
 
         public List<Product>? Products
         {
@@ -243,5 +245,16 @@ namespace InventoryManagement.UI
                 }
             }
         }
+
+        private async void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.CommandParameter is Product product)
+            {
+                await _inventoryService.UpdateProductAsync(product);
+
+                await ReloadPage();
+            }
+        }
+
     }
 }

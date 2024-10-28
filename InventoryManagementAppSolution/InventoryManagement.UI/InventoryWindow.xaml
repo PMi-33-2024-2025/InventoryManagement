@@ -51,36 +51,35 @@
             <Button Content="Очистити" Width="100" Margin="0,5,0,0" Click="ClearButton_Click" />
         </StackPanel>
 
-        <DataGrid Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="10" ItemsSource="{Binding Products}" IsReadOnly="True">
+        <DataGrid Name="productsDataGrid" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="10" ItemsSource="{Binding Products}" IsReadOnly="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Код" Binding="{Binding Id}" Width="5*"/>
-                <DataGridTextColumn Header="Назва" Binding="{Binding Title}" Width="15*"/>
-                <DataGridTextColumn Header="Категорія" Binding="{Binding Category.Name}" Width="15*"/>
-                <DataGridTextColumn Header="К-ть" Binding="{Binding Amount}" Width="5*"/>
-                <DataGridTextColumn Header="Ціна" Binding="{Binding Price, StringFormat=\{0:F2\}}" Width="5*"/>
-                <DataGridTextColumn Header="Опис" Binding="{Binding Description}" Width="30*"/>
-                <DataGridTextColumn Header="Постачальник" Binding="{Binding Supplier.Name}" Width="15*"/>
-                <DataGridTextColumn Header="Дата оновлення" Binding="{Binding LastUpdated, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Width="15*"/>
+                <DataGridTextColumn Header="Код" Binding="{Binding Id}" Width="5*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Назва" Binding="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Width="15*"/>
+                <DataGridTextColumn Header="Категорія" Binding="{Binding Category.Name, UpdateSourceTrigger=PropertyChanged}" Width="15*"/>
+                <DataGridTextColumn Header="К-ть" Binding="{Binding Amount, UpdateSourceTrigger=PropertyChanged}" Width="5*"/>
+                <DataGridTextColumn Header="Ціна" Binding="{Binding Price,UpdateSourceTrigger=PropertyChanged, StringFormat=\{0:F2\}}" Width="5*"/>
+                <DataGridTextColumn Header="Опис" Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Width="30*"/>
+                <DataGridTextColumn Header="Постачальник" Binding="{Binding Supplier.Name, UpdateSourceTrigger=PropertyChanged}" Width="15*"/>
+                <DataGridTextColumn Header="Дата оновлення" Binding="{Binding LastUpdated, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Width="15*" IsReadOnly="True"/>
 
-                <DataGridTemplateColumn x:Name="editColumn" Width="40" Header="" Visibility="Collapsed" CanUserResize="False" CanUserSort="False">
+                <DataGridTemplateColumn x:Name="editColumn" Width="40" Header="" CanUserResize="False" CanUserSort="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="🖉" ToolTip="Edit" 
-                            CommandParameter="{Binding}" Width="30" />
+                            <Button Content="🖉" ToolTip="Edit" Click="EditButton_Click" CommandParameter="{Binding}" Width="30" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn x:Name="deleteColumn" Width="40" Header="" Visibility="Collapsed" CanUserResize="False" CanUserSort="False">
+                <DataGridTemplateColumn x:Name="deleteColumn" Width="40" Header="" CanUserResize="False" CanUserSort="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="🗑️" ToolTip="Delete" Click="DeleteButton_Click" 
-                            CommandParameter="{Binding}" Width="30" />
+                            <Button Content="🗑️" ToolTip="Delete" Click="DeleteButton_Click" CommandParameter="{Binding}" Width="30" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
 
     </Grid>
 </Window>
