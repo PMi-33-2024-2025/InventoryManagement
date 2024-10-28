@@ -32,9 +32,9 @@ namespace InventoryManagement.UI
 		{
 			var username = usernameTextBox.Text;
 			var password = passwordBox.Password;
-			var result = await _authService.LoginUserAsync(username, password);
+			var isLoggedIn = await _authService.LoginUserAsync(username, password);
 
-			if (result.Succeeded)
+			if (isLoggedIn)
 			{
 				CloseWindow();
 			}

@@ -29,14 +29,13 @@ namespace InventoryManagement.UI
                 .AddEntityFrameworkStores<InventoryDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<AuthService>();
+            services.AddSingleton<AuthService>();
             services.AddScoped<InventoryService>();
 			services.AddLogging();
 
             services.AddAuthentication();
 
 			ServiceProvider = services.BuildServiceProvider();
-            AuthService.ServiceProvider = ServiceProvider;
         }
     }
 }
