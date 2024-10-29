@@ -45,7 +45,7 @@ namespace InventoryManagement.BLL
 
 		public async Task UpdateProductAsync(Product product)
 		{
-			_db.Products.Update(product);
+            _db.Products.Update(product);
 			await _db.SaveChangesAsync();
 		}
 

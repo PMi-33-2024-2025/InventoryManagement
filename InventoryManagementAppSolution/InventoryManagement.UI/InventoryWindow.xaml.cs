@@ -216,6 +216,7 @@ namespace InventoryManagement.UI
             editColumn.Visibility = Visibility.Visible;
             deleteColumn.Visibility = Visibility.Visible;
             adminPanelButton.Visibility = Visibility.Collapsed;
+            productsDataGrid.IsReadOnly = false;
         }
 
         private void ConfigureForAdmin()
