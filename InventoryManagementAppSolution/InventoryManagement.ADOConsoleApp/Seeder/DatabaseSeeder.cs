@@ -2,41 +2,51 @@
 
 namespace InventoryManagement.ADOConsoleApp.Seeder
 {
-	public static class DatabaseSeeder
+	public class DatabaseSeeder
 	{
-		const string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=InventoryManagement;" +
-				"Integrated Security=True;";
-		public static void FillDatabaseWithTestData()
+		private readonly string _connectionString;
+
+        public DatabaseSeeder(string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=InventoryManagement;" +
+                "Integrated Security=True;")
+        {
+            _connectionString = connectionString;
+        }
+
+        public void FillDatabaseWithTestData()
 		{
 			var categories = GenerateCategories(10);
 			var suppliers = GenerateSuppliers(10);
 			var products = GenerateProducts();
 
-			using (SqlConnection connection = new SqlConnection(connectionString))
+			using (SqlConnection connection = GetConnection())
 			{
 				connection.Open();
 
-				foreach (var category in categories)
-				{
-					string query = "INSERT INTO dbo.Categories (Name) VALUES (@Name)";
-					using (SqlCommand command = new SqlCommand(query, connection))
-					{
-						command.Parameters.AddWithValue("@Name", category);
-						command.ExecuteNonQuery();
-					}
-				}
+                var categoryIds = new List<int>();
+                foreach (var category in categories)
+                {
+                    string query = "INSERT INTO dbo.Categories (Name) OUTPUT INSERTED.Id VALUES (@Name)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Name", category);
+                        int categoryId = (int)command.ExecuteScalar();
+                        categoryIds.Add(categoryId);
+                    }
+                }
 
-				foreach (var supplier in suppliers)
-				{
-					string query = "INSERT INTO dbo.Suppliers (Name) VALUES (@Name)";
-					using (SqlCommand command = new SqlCommand(query, connection))
-					{
-						command.Parameters.AddWithValue("@Name", supplier);
-						command.ExecuteNonQuery();
-					}
-				}
+				var supplierIds = new List<int>();
+                foreach (var supplier in suppliers)
+                {
+                    string query = "INSERT INTO dbo.Suppliers (Name) OUTPUT INSERTED.Id VALUES (@Name)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Name", supplier);
+						int supplierId = (int)command.ExecuteScalar();
+						supplierIds.Add(supplierId);
+                    }
+                }
 
-				Random rand = new Random();
+                Random rand = new Random();
 				for (int i = 0; i < products.Count; i++)
 				{
 					var product = products[i];
@@ -47,8 +57,12 @@ namespace InventoryManagement.ADOConsoleApp.Seeder
 						command.Parameters.AddWithValue("@Amount", rand.Next(1, 100));
 						command.Parameters.AddWithValue("@Price", Math.Round(rand.NextDouble() * 100, 2));
 						command.Parameters.AddWithValue("@Description", product.Description);
-						command.Parameters.AddWithValue("@CategoryId", rand.Next(1, categories.Count + 1));
-						command.Parameters.AddWithValue("@SupplierId", rand.Next(1, suppliers.Count + 1));
+
+                        int categoryId = categoryIds[rand.Next(categoryIds.Count)];
+                        command.Parameters.AddWithValue("@CategoryId", categoryId);
+
+						int supplierId = supplierIds[rand.Next(supplierIds.Count)];
+                        command.Parameters.AddWithValue("@SupplierId", supplierId);
 						command.Parameters.AddWithValue("@LastUpdated", DateTime.Now);
 						command.ExecuteNonQuery();
 					}
@@ -57,7 +71,32 @@ namespace InventoryManagement.ADOConsoleApp.Seeder
 			}
 		}
 
-		private static List<string> GenerateCategories(int count)
+        public void CleanUpTestData()
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string deleteProducts = "DELETE FROM dbo.Products";
+                string deleteSuppliers = "DELETE FROM dbo.Suppliers";
+                string deleteCategories = "DELETE FROM dbo.Categories";
+
+                using (SqlCommand command = new SqlCommand(deleteProducts, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                using (SqlCommand command = new SqlCommand(deleteSuppliers, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                using (SqlCommand command = new SqlCommand(deleteCategories, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static List<string> GenerateCategories(int count)
 		{
 			var categories = new List<string>
 			{
@@ -67,7 +106,7 @@ namespace InventoryManagement.ADOConsoleApp.Seeder
 			return categories.GetRange(0, Math.Min(count, categories.Count));
 		}
 
-		private static List<string> GenerateSuppliers(int count)
+		public static List<string> GenerateSuppliers(int count)
 		{
 			var suppliers = new List<string>
 			{
@@ -77,7 +116,7 @@ namespace InventoryManagement.ADOConsoleApp.Seeder
 			return suppliers.GetRange(0, Math.Min(count, suppliers.Count));
 		}
 
-		private static List<Product> GenerateProducts()
+		public static List<Product> GenerateProducts()
 		{
 			var products = new List<Product>
 			{
@@ -124,10 +163,10 @@ namespace InventoryManagement.ADOConsoleApp.Seeder
 			return products;
 		}
 
-		public static void DisplayData(string tableName, string query)
+		public void DisplayData(string tableName, string query)
 		{
 			Console.WriteLine($"\n--- {tableName} ---");
-			using (SqlConnection connection = new SqlConnection(connectionString))
+			using (SqlConnection connection = GetConnection())
 			{
 				connection.Open();
 				using (SqlCommand command = new SqlCommand(query, connection))
@@ -147,7 +186,12 @@ namespace InventoryManagement.ADOConsoleApp.Seeder
 			}
 		}
 
-		public class Product
+        public SqlConnection GetConnection()
+        {
+            return new SqlConnection(_connectionString);
+        }
+
+        public class Product
 		{
 			public string Title { get; set; }
 			public string Description { get; set; }

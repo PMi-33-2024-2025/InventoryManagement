@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InventoryManagement.ADOConsoleApp\InventoryManagement.ADOConsoleApp.csproj" />
     <ProjectReference Include="..\InventoryManagement.BLL\InventoryManagement.BLL.csproj" />
     <ProjectReference Include="..\InventoryManagement.DAL\InventoryManagement.DAL.csproj" />
   </ItemGroup>

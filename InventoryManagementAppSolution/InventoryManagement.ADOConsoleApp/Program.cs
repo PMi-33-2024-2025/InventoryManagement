@@ -8,23 +8,18 @@ using Serilog;
 
 namespace InventoryManagement.ADOConsoleApp
 {
-	public class Program
+    public class Program
 	{
 		static async Task Main(string[] args)
 		{
-			//var serviceCollection = new ServiceCollection();
-			//ConfigureServices(serviceCollection);
-			//var serviceProvider = serviceCollection.BuildServiceProvider();
+            //var serviceCollection = new ServiceCollection();
+            //ConfigureServices(serviceCollection);
+            //var serviceProvider = serviceCollection.BuildServiceProvider();
 
-			//await SeedData(serviceProvider);
-			//Console.WriteLine("Data was inserted successfully!");
+            //await SeedData(serviceProvider);
+            //Console.WriteLine("Data was inserted successfully!");
 
-			DatabaseSeeder.DisplayData("Categories", "SELECT Id, Name FROM dbo.Categories");
-			DatabaseSeeder.DisplayData("Suppliers", "SELECT Id, Name FROM dbo.Suppliers");
-			DatabaseSeeder.DisplayData("Products", "SELECT Id, Title, Amount, Price, Description FROM dbo.Products");
-			DatabaseSeeder.DisplayData("AspNetRoles", "SELECT * FROM dbo.AspNetRoles");
-			DatabaseSeeder.DisplayData("AspNetUsers", "SELECT * FROM dbo.AspNetUsers");
-			DatabaseSeeder.DisplayData("AspNetUserRoles", "SELECT * FROM dbo.AspNetUserRoles");
+            DisplaySeededData();
 
             Log.Logger = new LoggerConfiguration()
             .WriteTo.File("logs/logfile.txt", rollingInterval: RollingInterval.Day)
@@ -59,13 +54,17 @@ namespace InventoryManagement.ADOConsoleApp
 				.AddDefaultTokenProviders();
 
 			services.AddLogging();
-		}
 
-		private static async Task SeedData(IServiceProvider serviceProvider)
+            services.AddSingleton<DatabaseSeeder>();
+        }
+
+		private static async Task SeedData(IServiceProvider services)
 		{
-			using (var scope = serviceProvider.CreateScope())
+			using (var scope = services.CreateScope())
 			{
-				var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var serviceProvider = scope.ServiceProvider;
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 				var userManager = scope.ServiceProvider.GetRequiredService<UserManager<InventoryUser>>();
 
 				if (!await roleManager.RoleExistsAsync("Admin"))
@@ -90,10 +89,23 @@ namespace InventoryManagement.ADOConsoleApp
 				{
 					await userManager.CreateAsync(user, "UserPassword123!");
 					await userManager.AddToRoleAsync(user, "User");
-				}
-			}
+                }
 
-			DatabaseSeeder.FillDatabaseWithTestData();
-		}
-	}
+                var seeder = serviceProvider.GetRequiredService<DatabaseSeeder>();
+                seeder.FillDatabaseWithTestData();
+            }
+        }
+
+        private static void DisplaySeededData()
+        {
+            var seeder = new DatabaseSeeder();
+
+            seeder.DisplayData("Categories", "SELECT Id, Name FROM dbo.Categories");
+            seeder.DisplayData("Suppliers", "SELECT Id, Name FROM dbo.Suppliers");
+            seeder.DisplayData("Products", "SELECT Id, Title, Amount, Price, Description FROM dbo.Products");
+            seeder.DisplayData("AspNetRoles", "SELECT * FROM dbo.AspNetRoles");
+            seeder.DisplayData("AspNetUsers", "SELECT * FROM dbo.AspNetUsers");
+            seeder.DisplayData("AspNetUserRoles", "SELECT * FROM dbo.AspNetUserRoles");
+        }
+    }
 }
