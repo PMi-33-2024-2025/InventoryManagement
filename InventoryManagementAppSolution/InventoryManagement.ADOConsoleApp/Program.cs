@@ -3,6 +3,8 @@ using InventoryManagement.DAL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace InventoryManagement.ADOConsoleApp
 {
@@ -23,9 +25,31 @@ namespace InventoryManagement.ADOConsoleApp
 			DatabaseSeeder.DisplayData("AspNetRoles", "SELECT * FROM dbo.AspNetRoles");
 			DatabaseSeeder.DisplayData("AspNetUsers", "SELECT * FROM dbo.AspNetUsers");
 			DatabaseSeeder.DisplayData("AspNetUserRoles", "SELECT * FROM dbo.AspNetUserRoles");
-		}
 
-		private static void ConfigureServices(IServiceCollection services)
+            Log.Logger = new LoggerConfiguration()
+            .WriteTo.File("logs/logfile.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+            try
+            {
+                Log.Information("Application Starting");
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application failed to start correctly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .UseSerilog();
+
+        private static void ConfigureServices(IServiceCollection services)
 		{
 			services.AddDbContext<InventoryDbContext>(options =>
 				options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=InventoryManagement;Trusted_Connection=True;"));
