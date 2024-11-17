@@ -35,7 +35,7 @@ namespace InventoryManagement.BLL
 			.Include(p => p.Supplier)
 			.Include(p => p.Category)
 			.AsNoTracking()
-			.FirstAsync(p => p.Id == id);
+			.FirstOrDefaultAsync(p => p.Id == id);
 
 		public async Task AddProductAsync(Product product)
 		{
