@@ -6,36 +6,52 @@ using Microsoft.AspNetCore.Identity;
 using System.Windows;
 using Microsoft.AspNetCore.DataProtection;
 using System.IO;
+using Serilog;
 
 namespace InventoryManagement.UI
 {
-    public partial class App : Application
-    {
-        public static ServiceProvider ServiceProvider { get; private set; }
+	public partial class App : Application
+	{
+		public static ServiceProvider ServiceProvider { get; private set; }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+		protected override void OnStartup(StartupEventArgs e)
+		{
+			base.OnStartup(e);
 
-            var services = new ServiceCollection();
-            services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo(@"C:\keys"))
-                .SetApplicationName("InventoryManagement");
+			Log.Logger = new LoggerConfiguration()
+				.WriteTo.File("logs/logfile.txt", rollingInterval: RollingInterval.Day)
+				.CreateLogger();
 
-            services.AddDbContext<InventoryDbContext>(options =>
-                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=InventoryManagement;Integrated Security=True;"));
+			var services = new ServiceCollection();
+			services.AddLogging(loggingBuilder =>
+			{
+				loggingBuilder.AddSerilog(dispose: true);
+			});
 
-            services.AddIdentity<InventoryUser, IdentityRole>()
-                .AddEntityFrameworkStores<InventoryDbContext>()
-                .AddDefaultTokenProviders();
+			services.AddDataProtection()
+				.PersistKeysToFileSystem(new DirectoryInfo(@"C:\keys"))
+				.SetApplicationName("InventoryManagement");
 
-            services.AddSingleton<AuthService>();
-            services.AddScoped<InventoryService>();
-			services.AddLogging();
+			services.AddDbContext<InventoryDbContext>(options =>
+				options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=InventoryManagement;Integrated Security=True;"));
 
-            services.AddAuthentication();
+			services.AddIdentity<InventoryUser, IdentityRole>()
+				.AddEntityFrameworkStores<InventoryDbContext>()
+				.AddDefaultTokenProviders();
+
+			services.AddSingleton<AuthService>();
+			services.AddScoped<InventoryService>();
 
 			ServiceProvider = services.BuildServiceProvider();
-        }
-    }
+
+			Log.Information("Application started");
+		}
+
+		protected override void OnExit(ExitEventArgs e)
+		{
+			Log.Information("Application shutting down");
+			Log.CloseAndFlush();
+			base.OnExit(e);
+		}
+	}
 }
