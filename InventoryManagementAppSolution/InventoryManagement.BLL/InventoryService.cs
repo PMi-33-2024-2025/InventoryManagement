@@ -16,11 +16,6 @@ namespace InventoryManagement.BLL
             _logger = logger;
         }
 
-        public InventoryService(InventoryDbContext db)
-        {
-            _db = db;
-        }
-
         public async Task<List<Product>> GetProductsAsync()
         {
             _logger.LogInformation("Getting all products from the database.");

@@ -4,6 +4,8 @@ using InventoryManagement.BLL;
 using InventoryManagement.DAL;
 using InventoryManagement.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace InventoryManagement.Tests
 {
@@ -11,19 +13,21 @@ namespace InventoryManagement.Tests
     {
         private readonly InventoryService _inventoryService;
         private readonly DbContextMock<InventoryDbContext> _dbContextMock;
+        private readonly Mock<ILogger<InventoryService>> _loggerMock;
 
         public InventoryServiceTest()
         {
             _dbContextMock = new DbContextMock<InventoryDbContext>(new DbContextOptionsBuilder<InventoryDbContext>().Options);
+            _loggerMock = new Mock<ILogger<InventoryService>>();
 
-            var initialProducts = new List<Product>();
+			var initialProducts = new List<Product>();
             _dbContextMock.CreateDbSetMock(x => x.Products, initialProducts);
             var initialCategories = new List<Category>();
             _dbContextMock.CreateDbSetMock(x => x.Categories, initialCategories);
             var initialSuppliers = new List<Supplier>();
             _dbContextMock.CreateDbSetMock(x => x.Suppliers, initialSuppliers);
 
-            _inventoryService = new InventoryService(_dbContextMock.Object);
+            _inventoryService = new InventoryService(_dbContextMock.Object, _loggerMock.Object);
         }
 
         #region GetProductsAsync
