@@ -18,3 +18,13 @@
 - CRUD Operations: Easily create, read, update, and delete products and suppliers.
 - Order Management: Create and manage product orders to streamline your procurement process.
 - Stock Tracking: Keep track of product stock levels to ensure you never run out of essential items.
+- Advanced Search and Filtering: Quickly find specific products, orders, or suppliers using customizable filters.
+- User-Friendly Interface: A clean and intuitive WPF interface makes navigation and data management simple for users of all experience levels.
+- User Authentication and Authorization: ability for user to log in/register, ability for admin to change user roles
+
+## Who Is This Project For?
+
+The Inventory Management Application is ideal for:
+ - Retail Businesses: Track sales and stock to ensure products are always available for customers.
+ - Warehouses and Distributors: Manage bulk inventories and optimize supplier orders.
+ - E-commerce Stores: Coordinate stock levels across multiple channels
