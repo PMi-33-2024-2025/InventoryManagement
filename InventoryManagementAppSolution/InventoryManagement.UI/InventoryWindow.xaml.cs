@@ -182,15 +182,24 @@ namespace InventoryManagement.UI
 
         private async Task ReloadPage()
         {
-            await LoadCollectionsAsync();
-            SelectedMinPrice = MinPrice = Products?.Min(p => p.Price) ?? 0;
-            SelectedMaxPrice = MaxPrice = Products?.Max(p => p.Price) ?? 0;
+            loadingPanel.Visibility = Visibility.Visible;
+            try
+            {
+                await LoadCollectionsAsync();
+                SelectedMinPrice = MinPrice = Products?.Min(p => p.Price) ?? 0;
+                SelectedMaxPrice = MaxPrice = Products?.Max(p => p.Price) ?? 0;
 
-            string role = await _authService.GetCurrentUserRoleAsync();
+                string role = await _authService.GetCurrentUserRoleAsync();
 
-            if (role == "User") ConfigureForUser();
-            else if (role == "Admin") ConfigureForAdmin();
-            else ConfigureForVisitor();
+                if (role == "User") ConfigureForUser();
+                else if (role == "Admin") ConfigureForAdmin();
+                else ConfigureForVisitor();
+            }
+            finally
+            {
+                await Task.Delay(2000);
+                loadingPanel.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void ConfigureForVisitor()
